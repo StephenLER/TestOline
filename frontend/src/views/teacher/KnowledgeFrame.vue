@@ -5,18 +5,10 @@
       <h2 style="display: inline; margin-left: 20px">
         {{ subjectForm.subjectName }}的知识点框架
       </h2>
-      <el-button type="primary" style="float: right" @click="addNewParent()"
-        >新建第 {{ nextChapter }} 章</el-button
-      >
+      <el-button type="primary" style="float: right" @click="addNewParent()">新建第 {{ nextChapter }} 章</el-button>
     </div>
     <el-scrollbar :height="mainHeight">
-      <el-tree
-        :data="treeData"
-        node-key="chapterId"
-        default-expand-all
-        #default="scope"
-        :expand-on-click-node="false"
-      >
+      <el-tree :data="treeData" node-key="chapterId" default-expand-all #default="scope" :expand-on-click-node="false">
         <span class="custom-tree-node">
           <span>
             {{ scope.node.label }}
@@ -24,47 +16,23 @@
           </span>
 
           <span>
-            <el-button
-              v-if="!scope.data.isKnowledge"
-              type="success"
-              icon="circle-plus-filled"
-              circle
-              @click="() => append(scope.data)"
-            >
+            <el-button v-if="!scope.data.isKnowledge" type="success" icon="circle-plus-filled" circle
+              @click="() => append(scope.data)">
             </el-button>
-            <el-button
-              type="primary"
-              icon="edit"
-              circle
-              @click="
-                clearFormFields();
-                dialogFormVisible = true;
-                loadInfo(scope.data);
-              "
-            ></el-button>
-            <el-button
-              type="danger"
-              icon="delete-filled"
-              circle
-              @click="del(scope.node, scope.data)"
-            >
+            <el-button type="primary" icon="edit" circle @click="
+              clearFormFields();
+            dialogFormVisible = true;
+            loadInfo(scope.data);
+            "></el-button>
+            <el-button type="danger" icon="delete-filled" circle @click="del(scope.node, scope.data)">
             </el-button>
           </span>
         </span>
       </el-tree>
       <el-dialog title="修改节点信息" v-model="dialogFormVisible" width="600px">
-        <el-form
-          :model="chapterForm"
-          :rules="formRules"
-          ref="chapterForm"
-          label-width="200px"
-          label-position="right"
-        >
+        <el-form :model="chapterForm" :rules="formRules" ref="chapterForm" label-width="200px" label-position="right">
           <el-form-item label="节点名称" prop="content">
-            <el-input
-              style="width: 250px"
-              v-model="chapterForm.content"
-            ></el-input>
+            <el-input style="width: 250px" v-model="chapterForm.content"></el-input>
           </el-form-item>
           <!-- <el-form-item label="是否是知识点" prop="isKnowledge">
             <el-button-group>
@@ -115,7 +83,7 @@ export default {
 
       newChapterId: 1000,
       newSectionId: 10000,
-      nextChapter: 0,
+      nextChapter: 1,  // 默认值设为1
       treeFlatData: [],
       treeData: [],
     };
@@ -147,15 +115,18 @@ export default {
       // this.$router.push("/teacher/subjectInfo");
     },
     getNextChapter() {
+      if (this.treeData.length === 0) {
+        return 1;
+      }
       let label = this.treeData[this.treeData.length - 1].label;
       return parseInt(label.replace(/[^0-9]/gi, "")) + 1;
     },
     getTreeFlatData(data) {
       data.forEach((elem) => {
         this.treeFlatData.push(elem);
-        elem.children && elem.children.length > 0
-          ? this.getTreeFlatData(elem.children)
-          : "";
+        if (elem.children && elem.children.length > 0) {
+          this.getTreeFlatData(elem.children);
+        }
       });
     },
     clearFormFields() {
@@ -194,11 +165,11 @@ export default {
       this.treeData.push({
         chapterId: this.newChapterId++,
         chapterParentId: 0,
-        label: "第" + this.getNextChapter() + "章 未填写节点信息",
+        label: "第" + this.nextChapter + "章 未填写节点信息",
         isKnowledge: false,
         children: [],
       });
-      this.nextChapter = this.getNextChapter();
+      this.nextChapter++;
     },
     append(data) {
       // let vm = this;
@@ -308,14 +279,14 @@ export default {
       treeList.forEach((item) => {
         list.push(
           item.chapterId +
-            "," +
-            item.chapterParentId +
-            "," +
-            item.label +
-            "," +
-            item.isKnowledge +
-            "," +
-            this.subjectForm.subjectId
+          "," +
+          item.chapterParentId +
+          "," +
+          item.label +
+          "," +
+          item.isKnowledge +
+          "," +
+          this.subjectForm.subjectId
         );
       });
       this.$axios
@@ -353,6 +324,7 @@ export default {
 .el-tree {
   margin: 0 20px;
 }
+
 .custom-tree-node {
   flex: 1;
   display: flex;
@@ -360,6 +332,7 @@ export default {
   justify-content: space-between;
   font-size: 17px;
 }
+
 .el-tree-node__content {
   height: 43px;
 }

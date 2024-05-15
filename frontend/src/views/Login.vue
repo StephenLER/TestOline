@@ -5,32 +5,15 @@
       <div class="img"></div>
       <div class="login-box">
         <form action="#" style="width: 360px">
-          <img
-            src="../assets/login/user_login_icon.png"
-            alt=""
-            class="avatar"
-          />
+          <img src="../assets/login/user_login_icon.png" @click="toAdmin" alt="" class="avatar"
+            style="cursor: pointer;" />
           <h2 style="letter-spacing: 10px">登录系统</h2>
           <div class="radio-group">
             <div>
-              <el-button
-                icon="checked"
-                round
-                size="large"
-                :type="isTch"
-                @click="changeIdentity(2)"
-                >教师</el-button
-              >
+              <el-button icon="checked" round size="large" :type="isTch" @click="changeIdentity(2)">教师</el-button>
             </div>
             <div>
-              <el-button
-                icon="briefcase"
-                round
-                size="large"
-                :type="isStu"
-                @click="changeIdentity(3)"
-                >学生</el-button
-              >
+              <el-button icon="briefcase" round size="large" :type="isStu" @click="changeIdentity(3)">学生</el-button>
             </div>
           </div>
           <div class="input-group">
@@ -71,6 +54,11 @@ export default {
     }
   },
   methods: {
+    toAdmin() {
+      this.$router.push("/admin/login").then(() => {
+        window.location.reload();
+      });
+    },
     changeIdentity(id) {
       this.user.roleId = id;
       this.isTch = id == 2 ? "primary" : "";

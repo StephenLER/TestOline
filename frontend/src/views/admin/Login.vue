@@ -1,32 +1,21 @@
 <template>
   <div>
-    <img
-      src="@/assets/login/admin_login_bg.png"
-      alt=""
-      style="width: 100%; position: fixed; z-index: -1"
-    />
-    <div
-      style="
+    <img src="@/assets/login/admin_login_bg.png" alt="" style="width: 100%; position: fixed; z-index: -1" />
+    <div style="
         width: 50%;
         text-align: center;
         padding: 0 2rem;
         box-sizing: border-box;
-      "
-    >
-      <img
-        src="@/assets/login/user_login_icon.png"
-        alt=""
-        style="width: 120px; margin-top: 15%"
-      />
-      <h2
-        style="
+      ">
+      <img src="@/assets/login/user_login_icon.png" @click="toUser" alt=""
+        style="width: 120px; margin-top: 15%;cursor: pointer;" />
+      <h2 style="
           letter-spacing: 10px;
           font-size: 2.9rem;
           text-transform: uppercase;
           margin: 15px 0;
           color: #999;
-        "
-      >
+        ">
         登录系统
       </h2>
       <el-form :model="user" ref="user" label-position="right">
@@ -69,6 +58,9 @@ export default {
     }
   },
   methods: {
+    toUser() {
+      this.$router.push("/");
+    },
     isEmptyFields() {
       if (this.user.account == "") {
         this.$message.warning("用户名不能为空");
