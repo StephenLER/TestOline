@@ -4,7 +4,7 @@
       <h2 class="route-name">{{ routeName }}</h2>
     </el-col>
     <el-col :span="20">
-      <el-dropdown>
+      <el-dropdown style="cursor: pointer;">
         <el-avatar :style="{ backgroundColor: color }">{{
           username.substr(0, 1).toUpperCase()
         }}</el-avatar>
@@ -14,11 +14,15 @@
         <template #dropdown>
           <el-dropdown-menu>
             <el-dropdown-item @click="dialogFormVisible = true">
-              <el-icon><setting /></el-icon>
+              <el-icon>
+                <setting />
+              </el-icon>
               设置
             </el-dropdown-item>
             <el-dropdown-item @click="logOut()">
-              <el-icon><right /></el-icon>
+              <el-icon>
+                <right />
+              </el-icon>
               登出
             </el-dropdown-item>
           </el-dropdown-menu>
@@ -26,13 +30,7 @@
       </el-dropdown>
     </el-col>
     <el-dialog title="修改个人信息" v-model="dialogFormVisible" width="600px">
-      <el-form
-        :model="form"
-        :rules="formRules"
-        ref="form"
-        label-width="200px"
-        label-position="right"
-      >
+      <el-form :model="form" :rules="formRules" ref="form" label-width="200px" label-position="right">
         <el-form-item label="账号" prop="account">
           <el-input v-model="form.account" readonly="readonly"></el-input>
         </el-form-item>
@@ -178,9 +176,11 @@ export default {
   text-align: center;
   margin-top: 20px;
 }
+
 .el-input {
   width: 250px;
 }
+
 .el-dropdown {
   margin-top: 15px;
   margin-right: 15px;

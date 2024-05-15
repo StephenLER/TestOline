@@ -2,12 +2,7 @@
   <div>
     <el-row :gutter="20" style="margin-top: 20px">
       <el-col :span="8" v-for="data in cardData.slice(0, 3)" :key="data.title">
-        <number-card
-          :title="data.title"
-          :subtitle="data.subtitle"
-          :src="data.src"
-          :number="data.number"
-        >
+        <number-card :title="data.title" :subtitle="data.subtitle" :src="data.src" :number="data.number">
         </number-card>
       </el-col>
     </el-row>
@@ -164,6 +159,30 @@ export default {
         });
     },
     loadStudentData(suffix) {
+      this.cardData = [
+        {
+          title: "已完成测验",
+          subtitle: suffix + "已完成的测验总计",
+          src: require("../assets/home/icon_complete.png"),
+          number: 0,
+        },
+        {
+          title: "平均正确率",
+          subtitle: suffix + "在所有测验中的平均正确率",
+          src: require("../assets/home/icon_test.png"),
+          number: 0,
+        },
+        {
+          title: "最高正确率",
+          subtitle: suffix + "在所有测验中的最高正确率",
+          src: require("../assets/home/icon_success.png"),
+          number: 0,
+        },
+        {
+          title: "近七天完成测验的次数",
+          data: [],
+        },
+      ]
       this.$axios
         .get("/user/loadHomeData", {
           headers: { Authorization: userToken() },
@@ -252,5 +271,4 @@ export default {
   },
 };
 </script>
-<style scoped>
-</style>
+<style scoped></style>

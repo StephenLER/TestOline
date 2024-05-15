@@ -1,13 +1,13 @@
 <template>
-  <div>
-    <img src="../assets/login/user_login_bg.png" alt="" class="wave" />
+  <div class="login-container">
+    <img src="../assets/login/user_login_bg.png" alt="" class="wave" style="height: 100%;width: 100%;" />
     <div class="container">
       <div class="img"></div>
       <div class="login-box">
         <form action="#" style="width: 360px">
-          <img src="../assets/login/user_login_icon.png" @click="toAdmin" alt="" class="avatar"
-            style="cursor: pointer;" />
-          <h2 style="letter-spacing: 10px">登录系统</h2>
+          <img src="../assets/login/考试系统.svg" @click="toAdmin" alt="" class="avatar"
+            style="cursor: pointer;height: 5rem;" />
+          <h2 style="letter-spacing: 2px;font-size: 2rem;color: #ffffff;">SUFE考试系统</h2>
           <div class="radio-group">
             <div>
               <el-button icon="checked" round size="large" :type="isTch" @click="changeIdentity(2)">教师</el-button>
@@ -21,7 +21,7 @@
               <i class="fa fa-user"></i>
             </div>
             <div>
-              <input type="text" class="input" v-model="user.account" />
+              <input type="text" class="input" v-model="user.account" style="color: black;" />
             </div>
           </div>
           <div class="input-group">
@@ -29,7 +29,7 @@
               <i class="fa fa-lock"></i>
             </div>
             <div>
-              <input class="input" type="password" v-model="user.password" />
+              <input class="input" type="password" v-model="user.password" style="color: black;" />
             </div>
           </div>
           <input type="button" class="btn" value="登录" @click="login()" />
@@ -38,8 +38,10 @@
     </div>
   </div>
 </template>
+
 <script>
 import User from "@/services/user";
+
 export default {
   data() {
     return {
@@ -105,4 +107,22 @@ export default {
 <style scoped>
 @import url("../assets/login/user_login_style.css");
 @import url("https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css");
+
+.login-container {
+  position: relative;
+  width: 100%;
+  height: 100%;
+}
+
+.login-box {
+  background-color: rgba(230, 227, 227, 0.6);
+  border: 1px solid rgba(230, 227, 227, 0.6);
+  border-radius: 20px;
+  box-shadow: 0px 0px 10px rgba(241, 240, 240, 0.5);
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+  padding: 20px;
+}
 </style>

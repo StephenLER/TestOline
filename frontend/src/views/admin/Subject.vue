@@ -3,82 +3,36 @@
     <div style="margin-bottom: 10px">
       <h2 style="display: inline">科目信息</h2>
       <div style="display: inline; margin-left: 10px">
-        <el-select
-          filterable
-          placeholder="请选择专业"
-          @change="valueToMajorId"
-          v-model="majorForm.majorName"
-        >
-          <el-option
-            v-for="major in majorList"
-            :key="major.majorId"
-            :label="major.majorName"
-            :value="major.majorId"
-          >
+        <el-select filterable placeholder="请选择专业" @change="valueToMajorId" v-model="majorForm.majorName"
+          style="width: 600px;">
+          <el-option v-for="major in majorList" :key="major.majorId" :label="major.majorName" :value="major.majorId">
           </el-option>
         </el-select>
       </div>
       <div style="float: right">
-        <el-button
-          @click="
-            clearFormFields();
-            this.status = '新增';
-            dialogFormVisible = true;
-          "
-          :disabled="majorForm.majorName == ''"
-          >新增</el-button
-        >
-        <el-button
-          type="danger"
-          @click="del(this.multiSelection)"
-          :disabled="majorForm.majorName == ''"
-          >删除</el-button
-        >
+        <el-button @click="
+          clearFormFields();
+        this.status = '新增';
+        dialogFormVisible = true;
+        " :disabled="majorForm.majorName == ''">新增</el-button>
+        <el-button type="danger" @click="del(this.multiSelection)" :disabled="majorForm.majorName == ''">删除</el-button>
       </div>
-      <el-dialog
-        :title="status + '科目信息'"
-        v-model="dialogFormVisible"
-        width="600px"
-      >
-        <el-form
-          :model="subjectForm"
-          :rules="formRules"
-          ref="subjectForm"
-          label-width="200px"
-          label-position="right"
-        >
+      <el-dialog :title="status + '科目信息'" v-model="dialogFormVisible" width="600px">
+        <el-form :model="subjectForm" :rules="formRules" ref="subjectForm" label-width="200px" label-position="right">
           <el-form-item label="科目名称" prop="subjectName">
             <el-input v-model="subjectForm.subjectName"></el-input>
           </el-form-item>
           <el-form-item label="授课教师" prop="teacherId">
-            <el-select
-              filterable
-              placeholder="请选择授课教师"
-              @change="valueToUserId"
-              v-model="subjectForm.teacherId"
-            >
-              <el-option
-                v-for="teacher in teacherList"
-                :key="teacher.userId"
-                :label="teacher.username"
-                :value="teacher.userId"
-              >
+            <el-select filterable placeholder="请选择授课教师" @change="valueToUserId" v-model="subjectForm.teacherId">
+              <el-option v-for="teacher in teacherList" :key="teacher.userId" :label="teacher.username"
+                :value="teacher.userId">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="授课班级" prop="clazzId">
-            <el-select
-              filterable
-              placeholder="请选择授课班级"
-              @change="valueToClazzId"
-              v-model="subjectForm.clazzId"
-            >
-              <el-option
-                v-for="clazz in clazzList"
-                :key="clazz.clazzId"
-                :label="clazz.clazzName"
-                :value="clazz.clazzId"
-              >
+            <el-select filterable placeholder="请选择授课班级" @change="valueToClazzId" v-model="subjectForm.clazzId">
+              <el-option v-for="clazz in clazzList" :key="clazz.clazzId" :label="clazz.clazzName"
+                :value="clazz.clazzId">
               </el-option>
             </el-select>
           </el-form-item>
@@ -91,61 +45,38 @@
         </template>
       </el-dialog>
     </div>
-    <el-table
-      :data="
-        tableData.filter(
-          (data) =>
-            !search ||
-            data.subjectName.toLowerCase().includes(search.toLowerCase()) ||
-            data.teacherName.toLowerCase().includes(search.toLowerCase())
-        )
-      "
-      border
-      height="540px"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table :data="tableData.filter(
+      (data) =>
+        !search ||
+        data.subjectName.toLowerCase().includes(search.toLowerCase()) ||
+        data.teacherName.toLowerCase().includes(search.toLowerCase())
+    )
+      " border height="540px" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40"> </el-table-column>
       <el-table-column type="index" label="序号" width="60"> </el-table-column>
       <el-table-column prop="subjectName" label="科目名称"> </el-table-column>
       <el-table-column prop="teacherName" label="授课教师"> </el-table-column>
-      <el-table-column
-        prop="clazzName"
-        label="授课班级"
-        :filters="clazzFilterData"
-        :filter-method="clazzFilter"
-      >
+      <el-table-column prop="clazzName" label="授课班级" :filters="clazzFilterData" :filter-method="clazzFilter">
       </el-table-column>
       <el-table-column width="300">
         <template #header>
-          <el-input
-            v-model="search"
-            placeholder="输入科目名或教师姓名进行搜索"
-          />
+          <el-input v-model="search" placeholder="输入科目名或教师姓名进行搜索" />
         </template>
         <template #default="scope">
-          <el-button
-            @click="
-              clearFormFields();
-              this.status = '修改';
-              dialogFormVisible = true;
-              loadInfo(scope.row.subjectId);
-            "
-            >编辑</el-button
-          >
+          <el-button @click="
+            clearFormFields();
+          this.status = '修改';
+          dialogFormVisible = true;
+          loadInfo(scope.row.subjectId);
+          ">编辑</el-button>
           <el-button type="danger" @click="del([scope.row])">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div style="margin-top: 10px">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageno"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="size"
-        layout="total, sizes, ->, pager, next, jumper"
-        :total="totalItems"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageno"
+        :page-sizes="[5, 10, 20, 50]" :page-size="size" layout="total, sizes, ->, pager, next, jumper"
+        :total="totalItems">
       </el-pagination>
     </div>
   </div>

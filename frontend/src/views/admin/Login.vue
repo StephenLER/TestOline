@@ -1,23 +1,14 @@
 <template>
   <div>
-    <img src="@/assets/login/admin_login_bg.png" alt="" style="width: 100%; position: fixed; z-index: -1" />
+    <img src="@/assets/login/admin_login_bg.png" alt="" style="height: 100%;width: 100%;position: fixed; z-index: -1" />
     <div style="
         width: 50%;
         text-align: center;
         padding: 0 2rem;
         box-sizing: border-box;
       ">
-      <img src="@/assets/login/user_login_icon.png" @click="toUser" alt=""
-        style="width: 120px; margin-top: 15%;cursor: pointer;" />
-      <h2 style="
-          letter-spacing: 10px;
-          font-size: 2.9rem;
-          text-transform: uppercase;
-          margin: 15px 0;
-          color: #999;
-        ">
-        登录系统
-      </h2>
+      <img src="@/assets/login/管理员.svg" @click="toUser" alt="" style="height: 4rem; margin-top: 15%;cursor: pointer;" />
+      <h2 style="letter-spacing: 3px;font-size: 2rem;color: #2f5d50;">管理员登录</h2>
       <el-form :model="user" ref="user" label-position="right">
         <el-form-item prop="account">
           <div class="input-group">

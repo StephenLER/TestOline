@@ -61,10 +61,10 @@
                     filterable filter-placeholder="输入题目信息进行搜索" :left-default-checked="randomCheck">
                     <template #default="{ option }">
                       <el-tag :type="option.type == '判断题'
-                          ? 'success'
-                          : option.type == '简答题'
-                            ? 'danger'
-                            : ''
+                        ? 'success'
+                        : option.type == '简答题'
+                          ? 'danger'
+                          : ''
                         ">{{ option.type }}</el-tag>
                       <span style="margin-left: 10px">{{ option.label }}</span>
                     </template>
@@ -89,10 +89,10 @@
                   <el-table-column prop="typeName" label="题目类型" width="85">
                     <template #default="scope">
                       <el-tag :type="scope.row.typeName == '判断题'
-                          ? 'success'
-                          : scope.row.typeName == '简答题'
-                            ? 'danger'
-                            : ''
+                        ? 'success'
+                        : scope.row.typeName == '简答题'
+                          ? 'danger'
+                          : ''
                         ">
                         {{ scope.row.typeName }}
                       </el-tag>
@@ -111,8 +111,7 @@
       <el-row v-if="testForm.subjectId != '' && testForm.generateWay == '2'">
         <el-col :span="6">
           <el-form-item label="预设题数" prop="presetQuestionTotal">
-            <el-input-number v-model="testForm.presetQuestionTotal" :step="1" :min="1"
-              :max="subjectQuestionList.length" />
+            <el-input-number v-model="testForm.presetQuestionTotal" :step="1" :min="0" :max="100" />
           </el-form-item>
         </el-col>
         <el-col :span="6">
@@ -381,7 +380,8 @@ export default {
       this.testForm.questionList = [];
       this.testForm.questionTotal = 0;
       this.shortAnswerBtnVisible = this.haveShortAnswer();
-      if (this.testForm.generateWay == "2" && this.testForm.subjectId != "") {
+      if (this.testForm.generateWay === "2" && this.testForm.subjectId != "") {
+        console.log("=======现在是智能组卷")
         this.findQuestionBySubjectId(this.testForm.subjectId);
       }
     },
