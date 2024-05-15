@@ -1,4 +1,4 @@
-# 在线测验管理系统（Exam Online System）
+# SUFE考试系统
 ### 1 项目简介
 - 项目介绍：
     - 本项目以在线考试系统为实现基础，将基于遗传算法的智能组卷模块作为核心内容，展开研究，简单阐述用户管理、科目管理、知识点管理、题库管理、考试管理等基础模块的实现，着重讨论基于遗传算法的智能组卷方式与考试结果可视化分析的设计与实现。
@@ -24,7 +24,7 @@
     - 前端：port为8080，命令为`npm run serve`（编译并热重载）
         1. 启动前提：项目中用到的所有包都已经安装好并且没有报错（可用`npm install`命令安装，检查frontend文件夹下是否有node_modules文件夹）
     - 后端：port为9090
-        1. 使用项目下的res/db/4.0/create.sql文件初始化数据库（管理员账号：123，密码：123）
+        1. 使用项目下的res/db/4.0/create.sql文件初始化数据库（管理员账号：admin，密码：123456）
         2. 修改配置文件application.properties中的各项参数：`spring.datasource.url`和`spring.datasource.password`
 ### 2 页面展示
 #### 1 管理员端
