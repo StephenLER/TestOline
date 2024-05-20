@@ -311,7 +311,7 @@ CREATE TABLE `short_answer` (
   KEY `short_answer_id` (`short_answer_id`) USING BTREE,
   CONSTRAINT `fk_short_answer_question_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_short_answer_test_1` FOREIGN KEY (`test_id`) REFERENCES `test` (`test_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=132 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=133 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -320,7 +320,7 @@ CREATE TABLE `short_answer` (
 
 LOCK TABLES `short_answer` WRITE;
 /*!40000 ALTER TABLE `short_answer` DISABLE KEYS */;
-INSERT INTO `short_answer` VALUES (130,50,702,105),(131,50,703,105);
+INSERT INTO `short_answer` VALUES (132,50,702,106);
 /*!40000 ALTER TABLE `short_answer` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -442,7 +442,7 @@ CREATE TABLE `test` (
   PRIMARY KEY (`test_id`) USING BTREE,
   KEY `fk_test_subject_1` (`subject_id`) USING BTREE,
   CONSTRAINT `fk_test_subject_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=106 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=107 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -451,7 +451,7 @@ CREATE TABLE `test` (
 
 LOCK TABLES `test` WRITE;
 /*!40000 ALTER TABLE `test` DISABLE KEYS */;
-INSERT INTO `test` VALUES (105,'期中考试','','2024-05-18 00:00:00','2024-06-17 00:00:00',60,1,12,49,0.47,NULL,NULL,NULL,NULL,NULL);
+INSERT INTO `test` VALUES (106,'期中考试','','2024-05-19 00:00:00','2024-06-16 00:00:00',60,1,8,49,0.48,NULL,NULL,NULL,NULL,NULL);
 /*!40000 ALTER TABLE `test` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -475,7 +475,7 @@ CREATE TABLE `test_history` (
   KEY `history_id` (`history_id`) USING BTREE,
   CONSTRAINT `fk_test_history_test_1` FOREIGN KEY (`test_id`) REFERENCES `test` (`test_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `fk_test_history_user_1` FOREIGN KEY (`student_id`) REFERENCES `user` (`user_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=7283 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=7286 DEFAULT CHARSET=utf8mb4 COLLATE=utf8mb4_0900_ai_ci ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -484,6 +484,7 @@ CREATE TABLE `test_history` (
 
 LOCK TABLES `test_history` WRITE;
 /*!40000 ALTER TABLE `test_history` DISABLE KEYS */;
+INSERT INTO `test_history` VALUES (7283,8,'2024-05-20 21:25:27',66,106,855),(7284,1,'2024-05-20 21:26:17',27,106,854),(7285,6,'2024-05-20 21:28:31',22,106,856);
 /*!40000 ALTER TABLE `test_history` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -505,7 +506,7 @@ CREATE TABLE `test_history_question_reply` (
   KEY `history_id` (`history_id`) USING BTREE,
   CONSTRAINT `test_history_question_reply_ibfk_1` FOREIGN KEY (`question_id`) REFERENCES `question` (`question_id`) ON DELETE CASCADE ON UPDATE CASCADE,
   CONSTRAINT `test_history_question_reply_ibfk_2` FOREIGN KEY (`history_id`) REFERENCES `test_history` (`history_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE=InnoDB AUTO_INCREMENT=48384 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
+) ENGINE=InnoDB AUTO_INCREMENT=48408 DEFAULT CHARSET=utf8mb3 ROW_FORMAT=DYNAMIC;
 /*!40101 SET character_set_client = @saved_cs_client */;
 
 --
@@ -514,6 +515,7 @@ CREATE TABLE `test_history_question_reply` (
 
 LOCK TABLES `test_history_question_reply` WRITE;
 /*!40000 ALTER TABLE `test_history_question_reply` DISABLE KEYS */;
+INSERT INTO `test_history_question_reply` VALUES (48384,7283,688,'C'),(48385,7283,689,'C'),(48386,7283,690,'D'),(48387,7283,691,'C'),(48388,7283,695,'true'),(48389,7283,696,'false'),(48390,7283,697,'true'),(48391,7283,702,'1.'),(48392,7284,688,'A'),(48393,7284,689,'A'),(48394,7284,690,'A'),(48395,7284,691,'A'),(48396,7284,695,'false'),(48397,7284,696,'true'),(48398,7284,697,'false'),(48399,7284,702,'（一）农业自身原因引起差距拉大：\n1、农业结构不合理，农民增收困难；\n2、农村中非农产业不发达，农民收入增长缓慢；\n3、农村剩余劳动力涌现，造成农民收入低且增长缓慢；\n4、农民负担重；\n（二）城乡收入差异的深层原因：\n1、国家政策及体制因素；\n2、落后的二元结构；\n3、农业财政投入的有限和农村金融制度安排的缺陷；\n4、乡镇企业和非农产业的收入已成为农民收入增加的重要来源；\n5、第三产业发展不充分和农民自身素质有限；\n3.'),(48400,7285,688,'B'),(48401,7285,689,'C'),(48402,7285,690,'D'),(48403,7285,691,'C'),(48404,7285,695,'true'),(48405,7285,696,'true'),(48406,7285,697,'true'),(48407,7285,702,'（一）农业自身原因引起差距拉大：\n1、农业结构不合理，农民增收困难；\n2、农村中非农产业不发达，农民收入增长缓慢；\n3、农村剩余劳动力涌现，造成农民收入低且增长缓慢；\n4、农民负担重；\n（二）城乡收入差异的深层原因：\n1、国家政策及体制因素；\n2、落后的二元结构；\n3、农业财政投入的有限和农村金融制度安排的缺陷；\n4、乡镇企业和非农产业的收入已成为农民收入增加的重要来源；\n5、第三产业发展不充分和农民自身素质有限；');
 /*!40000 ALTER TABLE `test_history_question_reply` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -594,7 +596,7 @@ CREATE TABLE `test_question_list` (
 
 LOCK TABLES `test_question_list` WRITE;
 /*!40000 ALTER TABLE `test_question_list` DISABLE KEYS */;
-INSERT INTO `test_question_list` VALUES (105,688),(105,689),(105,690),(105,691),(105,692),(105,695),(105,696),(105,697),(105,698),(105,700),(105,702),(105,703);
+INSERT INTO `test_question_list` VALUES (106,688),(106,689),(106,690),(106,691),(106,695),(106,696),(106,697),(106,702);
 /*!40000 ALTER TABLE `test_question_list` ENABLE KEYS */;
 UNLOCK TABLES;
 
@@ -905,4 +907,4 @@ SET character_set_client = @saved_cs_client;
 /*!40101 SET COLLATION_CONNECTION=@OLD_COLLATION_CONNECTION */;
 /*!40111 SET SQL_NOTES=@OLD_SQL_NOTES */;
 
--- Dump completed on 2024-05-19 22:09:53
+-- Dump completed on 2024-05-20 21:32:22
