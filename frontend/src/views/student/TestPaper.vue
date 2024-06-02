@@ -8,89 +8,58 @@
           <span> {{ testForm.testName }} </span>
         </template>
         <el-row>
-          <el-col
-            :span="8"
-            v-for="(item, i) in ['当前', '未答', '已答']"
-            :key="i"
-          >
+          <el-col :span="8" v-for="(item, i) in ['当前', '未答', '已答']" :key="i">
             <div style="text-align: center">
-              <el-button
-                size="small"
-                circle
-                disabled
-                :id="'logo-' + i"
-                style="cursor: auto; margin-bottom: 5px"
-              ></el-button>
-              <span
-                style="
+              <el-button size="small" circle disabled :id="'logo-' + i"
+                style="cursor: auto; margin-bottom: 5px"></el-button>
+              <span style="
                   flex-direction: column;
                   display: flex;
                   align-items: center;
-                "
-                >{{ item }}</span
-              >
+                ">{{ item }}</span>
             </div>
           </el-col>
         </el-row>
       </el-card>
-      <el-card
-        shadow="hover"
-        style="margin-bottom: 10px"
-        v-for="(type, index) in testForm.questionList"
-        :key="index"
-      >
+      <el-card shadow="hover" style="margin-bottom: 10px" v-for="(type, index) in testForm.questionList" :key="index">
         <template #header>
           <span style="font-weight: bold">{{ type.name }}</span>
         </template>
-        <el-row
-          v-for="(list, i) in type.list"
-          :key="i"
-          :style="{ marginBottom: i + 1 == list.length ? '' : '5px' }"
-        >
-          <el-col
-            :span="Math.floor(24 / CARD_COL_NUMBER)"
-            v-for="(item, j) in list"
-            :key="j"
-          >
+        <el-row v-for="(list, i) in type.list" :key="i" :style="{ marginBottom: i + 1 == list.length ? '' : '5px' }">
+          <el-col :span="Math.floor(24 / CARD_COL_NUMBER)" v-for="(item, j) in list" :key="j">
             <div style="text-align: center">
-              <el-button
-                circle
-                size="large"
-                :class="{
-                  'index-btn-border':
-                    sequence ==
-                    j +
-                      1 +
-                      i * CARD_COL_NUMBER +
-                      (0 +
-                        (index > 0 ? testForm.questionList[0].length : 0) +
-                        (index > 1 ? testForm.questionList[1].length : 0)),
-                  'index-btn-style':
-                    reply[
-                      j +
-                        i * CARD_COL_NUMBER +
-                        (0 +
-                          (index > 0 ? testForm.questionList[0].length : 0) +
-                          (index > 1 ? testForm.questionList[1].length : 0))
-                    ] != undefined,
-                }"
-                style="
+              <el-button circle size="large" :class="{
+                'index-btn-border':
+                  sequence ==
+                  j +
+                  1 +
+                  i * CARD_COL_NUMBER +
+                  (0 +
+                    (index > 0 ? testForm.questionList[0].length : 0) +
+                    (index > 1 ? testForm.questionList[1].length : 0)),
+                'index-btn-style':
+                  reply[
+                  j +
+                  i * CARD_COL_NUMBER +
+                  (0 +
+                    (index > 0 ? testForm.questionList[0].length : 0) +
+                    (index > 1 ? testForm.questionList[1].length : 0))
+                  ] != undefined,
+              }" style="
                   cursor: auto;
                   margin-bottom: 5px;
                   font-weight: bold;
                   font-size: 16px;
-                "
-                @click="
+                " @click="
                   jumpTo(
                     j +
-                      1 +
-                      i * CARD_COL_NUMBER +
-                      (0 +
-                        (index > 0 ? testForm.questionList[0].length : 0) +
-                        (index > 1 ? testForm.questionList[1].length : 0))
+                    1 +
+                    i * CARD_COL_NUMBER +
+                    (0 +
+                      (index > 0 ? testForm.questionList[0].length : 0) +
+                      (index > 1 ? testForm.questionList[1].length : 0))
                   )
-                "
-              >
+                  ">
                 {{
                   j +
                   1 +
@@ -110,101 +79,58 @@
     </el-aside>
     <!-- 右侧-答题区域 -->
     <el-main>
-      <div
-        style="display: flex; line-height: 50px; margin: 0 20px"
-        v-if="testInfoFlag"
-      >
+      <div style="display: flex; line-height: 50px; margin: 0 20px" v-if="testInfoFlag">
         <span> 全卷共{{ testForm.questionTotal }}题 </span>
         <span style="margin-left: auto">
-          <count-down
-            :key="countDownKey"
-            :flag="timekeep"
-            :remainTime="remainSecond"
-            @returnTakeTime="getTime"
-          ></count-down>
+          <count-down :key="countDownKey" :flag="timekeep" :remainTime="remainSecond"
+            @returnTakeTime="getTime"></count-down>
         </span>
       </div>
       <div style="padding: 0px 20px" v-if="testPaperFlag">
-        <choice-question
-          :key="questionRefreshKey"
-          v-if="
-            sequence > 0 && sequence <= testForm.questionList[CHOICE_NO].length
-          "
-          :number="sequence"
-          :title="
-            testForm.questionList[CHOICE_NO].list[
+        <choice-question :key="questionRefreshKey" v-if="
+          sequence > 0 && sequence <= testForm.questionList[CHOICE_NO].length
+        " :number="sequence" :title="testForm.questionList[CHOICE_NO].list[
               questionRowCol[CHOICE_NO * 2]
             ][questionRowCol[CHOICE_NO * 2 + 1]].questionTitle
-          "
-          :answers="
-            testForm.questionList[CHOICE_NO].list[
+            " :answers="testForm.questionList[CHOICE_NO].list[
               questionRowCol[CHOICE_NO * 2]
             ][questionRowCol[CHOICE_NO * 2 + 1]].answer
-          "
-          :choose="reply[sequence - 1]"
-          @returnAnswer="getReply"
-        ></choice-question>
-        <judge-question
-          :key="questionRefreshKey"
-          v-if="
-            sequence > testForm.questionList[CHOICE_NO].length &&
-            sequence <=
-              testForm.questionList[CHOICE_NO].length +
-                testForm.questionList[JUDGE_NO].length
-          "
-          :number="sequence"
-          :questionId="
-            testForm.questionList[JUDGE_NO].list[questionRowCol[JUDGE_NO * 2]][
+            " :choose="reply[sequence - 1]" @returnAnswer="getReply"></choice-question>
+        <judge-question :key="questionRefreshKey" v-if="
+          sequence > testForm.questionList[CHOICE_NO].length &&
+          sequence <=
+          testForm.questionList[CHOICE_NO].length +
+          testForm.questionList[JUDGE_NO].length
+        " :number="sequence" :questionId="testForm.questionList[JUDGE_NO].list[questionRowCol[JUDGE_NO * 2]][
               questionRowCol[JUDGE_NO * 2 + 1]
             ].questionId
-          "
-          :title="
-            testForm.questionList[JUDGE_NO].list[questionRowCol[JUDGE_NO * 2]][
+            " :title="testForm.questionList[JUDGE_NO].list[questionRowCol[JUDGE_NO * 2]][
               questionRowCol[JUDGE_NO * 2 + 1]
             ].questionTitle
-          "
-          :choose="reply[sequence - 1]"
-          @returnAnswer="getReply"
-        ></judge-question>
-        <short-answer-question
-          :key="questionRefreshKey"
-          v-if="
-            sequence >
-              testForm.questionList[CHOICE_NO].length +
-                testForm.questionList[JUDGE_NO].length &&
-            sequence <= testForm.questionTotal
-          "
-          :number="sequence"
-          :questionId="
-            testForm.questionList[SHORT_ANSWER_NO].list[
+            " :choose="reply[sequence - 1]" @returnAnswer="getReply"></judge-question>
+        <short-answer-question :key="questionRefreshKey" v-if="
+          sequence >
+          testForm.questionList[CHOICE_NO].length +
+          testForm.questionList[JUDGE_NO].length &&
+          sequence <= testForm.questionTotal
+        " :number="sequence" :questionId="testForm.questionList[SHORT_ANSWER_NO].list[
               questionRowCol[SHORT_ANSWER_NO * 2]
             ][questionRowCol[SHORT_ANSWER_NO * 2 + 1]].questionId
-          "
-          :title="
-            testForm.questionList[SHORT_ANSWER_NO].list[
+            " :title="testForm.questionList[SHORT_ANSWER_NO].list[
               questionRowCol[SHORT_ANSWER_NO * 2]
             ][questionRowCol[SHORT_ANSWER_NO * 2 + 1]].questionTitle
-          "
-          :content="reply[sequence - 1]"
-          @returnAnswer="getReply"
-        ></short-answer-question>
+            " :content="reply[sequence - 1]" @returnAnswer="getReply"></short-answer-question>
       </div>
       <div class="operation">
         <ul class="end">
           <li>
-            <el-button
-              :disabled="sequence == 1"
-              @click="this.jumpTo(--this.sequence)"
-            >
+            <el-button :disabled="sequence == 1" @click="this.jumpTo(--this.sequence)">
               <el-icon style="margin-right: 10px"><arrow-left-bold /></el-icon>
               <span>上一题</span>
             </el-button>
           </li>
           <li>
-            <el-button
-              :disabled="sequence == testForm.questionTotal"
-              @click="this.jumpTo(++this.sequence)"
-            >
+            <el-button :disabled="sequence == testForm.questionTotal" @click="this.jumpTo(++this.sequence)">
               <span>下一题</span>
               <el-icon style="margin-left: 10px"><arrow-right-bold /></el-icon>
             </el-button>
@@ -354,7 +280,7 @@ export default {
       } else if (
         i <=
         this.testForm.questionList[this.CHOICE_NO].length +
-          this.testForm.questionList[this.JUDGE_NO].length
+        this.testForm.questionList[this.JUDGE_NO].length
       ) {
         let order =
           this.sequence - this.testForm.questionList[this.CHOICE_NO].length;
@@ -457,34 +383,42 @@ export default {
   height: fit-content;
   text-align: center;
 }
+
 /* 左侧索引指示信息 */
 #logo-0 {
   border: 2px solid red;
 }
+
 #logo-1 {
   border: 1px solid #eee;
 }
+
 #logo-2 {
-  background-color: #38d39f;
+  background-color: #39b1f0;
 }
+
 /* 题目是否已答背景 */
 .index-btn-style {
-  background-color: #38d39f !important;
+  background-color: #39b1f0 !important;
   color: #fff;
 }
+
 .index-btn-border {
   position: relative;
   border: 2px solid red !important;
 }
+
 /* 上下页按钮 */
 .operation .end li button {
   border: none;
   font-size: 17px;
   background-color: #fff;
 }
+
 .operation .end li {
   margin: 0 75px;
 }
+
 .operation .end {
   list-style: none;
   display: flex;

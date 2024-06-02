@@ -4,11 +4,14 @@
     <div style="
         width: 50%;
         text-align: center;
-        padding: 0 2rem;
+        padding: 2rem;
         box-sizing: border-box;
       ">
-      <img src="@/assets/login/管理员.svg" @click="toUser" alt="" style="height: 4rem; margin-top: 15%;cursor: pointer;" />
-      <h2 style="letter-spacing: 3px;font-size: 2rem;color: #2f5d50;">管理员登录</h2>
+      <div style="margin-left: -2.3rem;">
+        <img src="@/assets/login/管理员.svg" @click="toUser" alt=""
+          style="height: 5rem; margin-top: 10%;cursor: pointer;" />
+        <h2 style="letter-spacing: 3px;font-size: 2rem;color: #2f5d50;">管理员登录</h2>
+      </div>
       <el-form :model="user" ref="user" label-position="right">
         <el-form-item prop="account">
           <div class="input-group">
@@ -31,7 +34,9 @@
           </div>
         </el-form-item>
       </el-form>
-      <button @click="login()">登录</button>
+      <div style="margin-left: -2.3rem;">
+        <button @click="login()" class="btn" style="width: 10%;">登 录</button>
+      </div>
     </div>
   </div>
 </template>
@@ -72,7 +77,6 @@ export default {
           })
           .then((response) => {
             if (response.data.token) {
-              // 将该登录用户的令牌移入store
               this.$storage.setStorageSync("user", response.data, 10800000);
               this.$router.push("/home");
             }

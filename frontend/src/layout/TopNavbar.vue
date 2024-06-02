@@ -1,60 +1,58 @@
 <template>
-  <el-row>
-    <el-col :span="4">
-      <h2 class="route-name">{{ routeName }}</h2>
-    </el-col>
-    <el-col :span="20">
-      <el-dropdown style="cursor: pointer;">
-        <el-avatar :style="{ backgroundColor: color }">{{
-          username.substr(0, 1).toUpperCase()
-        }}</el-avatar>
-        <el-icon style="margin-left: 15px; float: right; margin-top: 15px">
-          <arrow-down />
-        </el-icon>
-        <template #dropdown>
-          <el-dropdown-menu>
-            <el-dropdown-item @click="dialogFormVisible = true">
-              <el-icon>
-                <setting />
-              </el-icon>
-              设置
-            </el-dropdown-item>
-            <el-dropdown-item @click="logOut()">
-              <el-icon>
-                <right />
-              </el-icon>
-              登出
-            </el-dropdown-item>
-          </el-dropdown-menu>
+  <div class="containers">
+    <el-row class="topnav" style="margin-top: 0.5rem;">
+      <el-col :span="4" class="logo-container">
+        <img src="../assets/智慧考试.svg" class="logo-image">
+        <span class="sufe-text">SUFE考试系统</span>
+      </el-col>
+      <el-col :span="20" class="user-info">
+        <div class="user-container">
+          <span class="username">{{ form.username }}</span>
+          <el-dropdown class="user-dropdown">
+            <img src="../assets/用户.svg" class="user-icon">
+            <arrow-down />
+            <template #dropdown>
+              <el-dropdown-menu>
+                <el-dropdown-item @click="dialogFormVisible = true">个人中心</el-dropdown-item>
+                <el-dropdown-item @click="logOut()">退出登录</el-dropdown-item>
+              </el-dropdown-menu>
+            </template>
+          </el-dropdown>
+        </div>
+      </el-col>
+      <el-dialog title="修改个人信息" v-model="dialogFormVisible" width="600px">
+        <el-form :model="form" :rules="formRules" ref="form" label-width="200px" label-position="right">
+          <el-form-item label="账号" prop="account">
+            <el-input v-model="form.account" readonly="readonly"></el-input>
+          </el-form-item>
+          <el-form-item label="名字" prop="username">
+            <el-input v-model="form.username"></el-input>
+          </el-form-item>
+          <el-form-item label="密码" prop="password">
+            <el-input type="password" v-model="form.password"></el-input>
+          </el-form-item>
+        </el-form>
+        <template #footer>
+          <span class="dialog-footer">
+            <el-button @click="dialogFormVisible = false">取消</el-button>
+            <el-button type="primary" @click="updateUser()">确定</el-button>
+          </span>
         </template>
-      </el-dropdown>
-    </el-col>
-    <el-dialog title="修改个人信息" v-model="dialogFormVisible" width="600px">
-      <el-form :model="form" :rules="formRules" ref="form" label-width="200px" label-position="right">
-        <el-form-item label="账号" prop="account">
-          <el-input v-model="form.account" readonly="readonly"></el-input>
-        </el-form-item>
-        <el-form-item label="名字" prop="username">
-          <el-input v-model="form.username"></el-input>
-        </el-form-item>
-        <el-form-item label="密码" prop="password">
-          <el-input type="password" v-model="form.password"></el-input>
-        </el-form-item>
-      </el-form>
-      <template #footer>
-        <span class="dialog-footer">
-          <el-button @click="dialogFormVisible = false">取 消</el-button>
-          <el-button type="primary" @click="updateUser()">确 定</el-button>
-        </span>
-      </template>
-    </el-dialog>
-  </el-row>
+      </el-dialog>
+    </el-row>
+  </div>
 </template>
+
 <script>
 import userToken from "@/services/auth-header";
 import { dealSelect } from "@/services/response";
 import User from "@/services/user";
+import { ArrowDown } from '@element-plus/icons-vue';
+
 export default {
+  components: {
+    ArrowDown,
+  },
   data() {
     return {
       dialogFormVisible: false,
@@ -78,7 +76,6 @@ export default {
     if (this.$storage.getStorageSync("user")) {
       this.color = this.getColor();
       this.loadInfo(this.$storage.getStorageSync("user").id);
-      // --el-header-height: 60px;
       this.$storage.setStorageSync("headerHeight", 60);
     }
   },
@@ -171,19 +168,87 @@ export default {
   },
 };
 </script>
+
 <style scoped>
-.route-name {
-  text-align: center;
-  margin-top: 20px;
+.containers {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-top: 0.2rem;
+}
+
+.topnav {
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 1rem;
+}
+
+.logo-container {
+  display: flex;
+  align-items: center;
+  z-index: 1;
+}
+
+.logo-image {
+  width: 3rem;
+  height: 3rem;
+  margin-right: 0.5rem;
+}
+
+.sufe-text {
+  font-family: 'Helvetica Neue', Arial, sans-serif;
+  font-size: 1.7rem;
+  font-weight: bold;
+  color: #007bbb;
+  text-shadow: 1px 1px 2px rgba(0, 0, 0, 0.1);
+  letter-spacing: 0.05rem;
+  line-height: 1.5;
+  z-index: 1;
+}
+
+.user-info {
+  display: flex;
+  justify-content: flex-end;
+  align-items: center;
+}
+
+.user-container {
+  display: flex;
+  align-items: center;
+}
+
+.username {
+  margin-right: 0.5rem;
+  margin-top: 0.2rem;
+  color: #165e83;
+}
+
+.user-dropdown {
+  display: flex;
+  align-items: center;
+}
+
+.user-icon {
+  width: 2rem;
+  border: none;
+  outline: none;
+  box-shadow: none;
+  cursor: pointer;
+}
+
+.user-icon:hover {
+  border: none;
+  outline: none;
+  box-shadow: none;
+}
+
+.arrow-icon {
+  margin-left: 0.5rem;
 }
 
 .el-input {
   width: 250px;
-}
-
-.el-dropdown {
-  margin-top: 15px;
-  margin-right: 15px;
-  float: right;
 }
 </style>

@@ -1,68 +1,63 @@
 <template>
-  <div>
-    <div class="background">
-      <img src="../assets/404/icon.svg" alt="404" style="width: 100%" />
-    </div>
+  <div class="not-found">
     <div class="content">
-      <div style="margin: 0 auto">
-        <p
-          style="
-            font-size: 70px;
-            font-weight: bolder;
-            letter-spacing: 5px;
-            line-height: 120px;
-            margin-bottom: 20px;
-            text-align: center;
-          "
-        >
-          未找到该网页<br />
-          请联系管理员
-        </p>
-      </div>
-      <div style="margin: 0 auto">
-        <el-button
-          type="primary"
-          round
-          style="letter-spacing: 3px; padding: 17px"
-          @click="toLogin()"
-        >
-          返回登录页面
-        </el-button>
+      <div class="center" style="margin-top: 10rem;">
+        <img src="../assets/404/icon.svg" alt="404 Error Image" class="error-image">
+        <h1>404 - 页面不存在</h1>
+        <p>抱歉，您访问的页面不存在。</p>
+        <router-link to="/" class="toindex">返回首页</router-link>
       </div>
     </div>
   </div>
 </template>
+
 <script>
 export default {
-  data() {
-    return {};
-  },
-  created() {},
-  methods: {
-    toLogin() {
-      this.$router.push("/");
-    },
-  },
-};
-</script>
-<style scoped>
-.background {
-  width: 100%;
-  height: 100%;
-  z-index: -1;
-  position: absolute;
-  overflow: hidden;
+  name: 'NotFound'
 }
-.content {
-  z-index: 1;
+</script>
+
+<style scoped>
+.not-found {
+  height: 100%;
   display: flex;
-  position: absolute;
-  left: 0;
-  top: 0;
-  right: 0;
-  bottom: 0;
   justify-content: center;
+  align-items: center;
+}
+
+.content {
+  text-align: center;
+  color: #132c29;
+}
+
+.center {
+  display: flex;
   flex-direction: column;
-  margin-left: 600px;
+  align-items: center;
+}
+
+.error-image {
+  width: 200px;
+}
+
+h1 {
+  font-size: 2.4em;
+  margin-top: 20px;
+}
+
+p {
+  font-size: 1.2em;
+  margin-top: 20px;
+}
+
+.toindex {
+  margin-top: 1rem;
+  font-size: 1.2rem;
+  color: #bb5535;
+  text-decoration: underline;
+}
+
+.toindex:hover {
+  color: red
 }
 </style>

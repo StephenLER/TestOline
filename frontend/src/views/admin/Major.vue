@@ -3,30 +3,15 @@
     <div style="margin-bottom: 10px">
       <h2 style="display: inline">专业信息</h2>
       <div style="float: right">
-        <el-button
-          @click="
-            clearFormFields();
-            this.status = '新增';
-            dialogFormVisible = true;
-          "
-          >新增</el-button
-        >
-        <el-button type="danger" @click="del(this.multiSelection)"
-          >删除</el-button
-        >
+        <el-button @click="
+          clearFormFields();
+        this.status = '新增';
+        dialogFormVisible = true;
+        ">新增</el-button>
+        <el-button type="danger" @click="del(this.multiSelection)">删除</el-button>
       </div>
-      <el-dialog
-        :title="status + '专业信息'"
-        v-model="dialogFormVisible"
-        width="600px"
-      >
-        <el-form
-          :model="majorForm"
-          :rules="formRules"
-          ref="majorForm"
-          label-width="200px"
-          label-position="right"
-        >
+      <el-dialog :title="status + '专业信息'" v-model="dialogFormVisible" width="600px">
+        <el-form :model="majorForm" :rules="formRules" ref="majorForm" label-width="200px" label-position="right">
           <el-form-item label="专业" prop="majorName">
             <el-input v-model="majorForm.majorName"></el-input>
           </el-form-item>
@@ -39,18 +24,12 @@
         </template>
       </el-dialog>
     </div>
-    <el-table
-      :data="
-        tableData.filter(
-          (data) =>
-            !search ||
-            data.majorName.toLowerCase().includes(search.toLowerCase())
-        )
-      "
-      border
-      height="540px"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table :data="tableData.filter(
+      (data) =>
+        !search ||
+        data.majorName.toLowerCase().includes(search.toLowerCase())
+    )
+      " border height="540px" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40"> </el-table-column>
       <el-table-column type="index" label="序号" width="60"> </el-table-column>
       <el-table-column prop="majorName" label="专业"> </el-table-column>
@@ -59,74 +38,47 @@
           <el-input v-model="search" placeholder="输入专业名称进行搜索" />
         </template>
         <template #default="scope">
-          <el-button
-            @click="
-              clearFormFields();
-              this.status = '修改';
-              dialogFormVisible = true;
-              loadInfo(scope.row.majorId);
-            "
-            >编辑</el-button
-          >
+          <el-button @click="
+            clearFormFields();
+          this.status = '修改';
+          dialogFormVisible = true;
+          loadInfo(scope.row.majorId);
+          ">编辑</el-button>
           <el-button type="danger" @click="del([scope.row])">删除</el-button>
-          <el-button
-            type="primary"
-            @click="
-              dialogTableVisible = true;
-              dialogTableTitle = scope.row.majorName;
-              dialogTableSubTitle = '所属班级';
-              loadClazzByMajorId(scope.row.majorId);
-            "
-          >
+          <el-button type="primary" @click="
+            dialogTableVisible = true;
+          dialogTableTitle = scope.row.majorName;
+          dialogTableSubTitle = '所属班级';
+          loadClazzByMajorId(scope.row.majorId);
+          ">
             查看所属班级
           </el-button>
-          <el-button
-            type="primary"
-            @click="
-              dialogTableVisible = true;
-              dialogTableTitle = scope.row.majorName;
-              dialogTableSubTitle = '所有教师信息';
-              loadTeacherByMajorId(scope.row.majorId);
-            "
-          >
+          <el-button type="primary" @click="
+            dialogTableVisible = true;
+          dialogTableTitle = scope.row.majorName;
+          dialogTableSubTitle = '所有教师信息';
+          loadTeacherByMajorId(scope.row.majorId);
+          ">
             查看所有教师
           </el-button>
         </template>
       </el-table-column>
     </el-table>
-    <el-dialog
-      :title="dialogTableTitle + '专业' + dialogTableSubTitle"
-      v-model="dialogTableVisible"
-      width="1000px"
-      top="70px"
-    >
+    <el-dialog :title="dialogTableTitle + '专业' + dialogTableSubTitle" v-model="dialogTableVisible" width="1000px"
+      top="70px">
       <el-table :data="dialogTableData" border height="540px">
         <el-table-column type="index" label="序号" width="60">
         </el-table-column>
-        <el-table-column
-          prop="clazzName"
-          label="班级"
-          v-if="dialogTableSubTitle == '所属班级'"
-        >
+        <el-table-column prop="clazzName" label="班级" v-if="dialogTableSubTitle == '所属班级'">
         </el-table-column>
-        <el-table-column
-          prop="username"
-          label="名字"
-          v-if="dialogTableSubTitle == '所有教师信息'"
-        >
+        <el-table-column prop="username" label="名字" v-if="dialogTableSubTitle == '所有教师信息'">
         </el-table-column>
       </el-table>
     </el-dialog>
     <div style="margin-top: 10px">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageno"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="size"
-        layout="total, sizes, ->, pager, next, jumper"
-        :total="totalItems"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageno"
+        :page-sizes="[5, 10, 20, 50]" :page-size="size" layout="total, sizes, ->, pager, next, jumper"
+        :total="totalItems">
       </el-pagination>
     </div>
   </div>

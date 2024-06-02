@@ -1,68 +1,30 @@
 <template>
   <el-container direction="horizontal">
     <el-aside width="300px" style="margin-top: 20px; margin-left: 20px">
-      <el-page-header
-        :content="testForm.testName"
-        @back="toTestHistory"
-        style="margin-bottom: 30px"
-      />
+      <el-page-header :content="testForm.testName" @back="toTestHistory" style="margin-bottom: 30px" />
       <el-card shadow="never" :body-style="{ padding: 0 }">
         <template #header>
-          <el-select
-            filterable
-            placeholder="请选择要查看的测验记录"
-            @change="valueToChangeHistory"
-            v-model="historyNumber"
-          >
-            <el-option
-              v-for="(str, index) in completeList"
-              :key="index"
-              :label="str"
-              :value="index"
-            >
+          <el-select filterable placeholder="请选择要查看的测验记录" @change="valueToChangeHistory" v-model="historyNumber">
+            <el-option v-for="(str, index) in completeList" :key="index" :label="str" :value="index">
             </el-option>
           </el-select>
         </template>
-        <el-table
-          border
-          :data="historyTableData"
-          :show-header="false"
-          table-layout="auto"
-          :row-style="{ height: '50px' }"
-          style="font-weight: bold"
-        >
-          <el-table-column
-            v-for="(item, index) in historyTableTitle"
-            :key="index"
-            align="center"
-          >
+        <el-table border :data="historyTableData" :show-header="false" table-layout="auto"
+          :row-style="{ height: '50px' }" style="font-weight: bold">
+          <el-table-column v-for="(item, index) in historyTableTitle" :key="index" align="center">
             <template #default="scope">
               {{ scope.row[index] }}
             </template>
           </el-table-column>
         </el-table>
       </el-card>
-      <el-card
-        shadow="never"
-        :body-style="{ padding: 0 }"
-        style="margin-top: 30px"
-      >
+      <el-card shadow="never" :body-style="{ padding: 0 }" style="margin-top: 30px">
         <template #header>
           <span>本次测验详情</span>
         </template>
-        <el-table
-          border
-          :data="testHistoryInfoTable"
-          :show-header="false"
-          table-layout="auto"
-          :row-style="{ height: '50px' }"
-          style="font-weight: bold"
-        >
-          <el-table-column
-            v-for="(item, index) in historyTableTitle"
-            :key="index"
-            align="center"
-          >
+        <el-table border :data="testHistoryInfoTable" :show-header="false" table-layout="auto"
+          :row-style="{ height: '50px' }" style="font-weight: bold">
+          <el-table-column v-for="(item, index) in historyTableTitle" :key="index" align="center">
             <template #default="scope">
               {{ scope.row[index] }}
             </template>
@@ -73,49 +35,25 @@
     <el-main>
       <el-scrollbar :height="mainHeight">
         <div>
-          <div
-            style="padding: 0px 20px"
-            v-for="(question, index) in testForm.questionList"
-            :key="question.questionId"
-          >
-            <choice-question
-              :key="questionRefreshKey"
-              v-if="question.typeName == '选择题'"
-              :number="index + 1"
-              :title="question.questionTitle"
-              :answers="question.answer"
-              :choose="reply[index]"
-              :isable="false"
-            ></choice-question>
-            <judge-question
-              :key="questionRefreshKey"
-              v-if="question.typeName == '判断题'"
-              :number="index + 1"
-              :questionId="question.questionId"
-              :title="question.questionTitle"
-              :choose="reply[index]"
-              :isable="false"
-            ></judge-question>
-            <short-answer-question
-              :key="questionRefreshKey"
-              v-if="question.typeName == '简答题'"
-              :number="index + 1"
-              :questionId="question.questionId"
-              :title="question.questionTitle"
-              :content="reply[index]"
-              :isable="true"
-            ></short-answer-question>
-            <span style="color: red"
-              >正确答案：{{
-                question.correct == "true"
-                  ? "√"
-                  : question.correct == "false"
+          <div style="padding: 0px 20px" v-for="(question, index) in testForm.questionList" :key="question.questionId">
+            <choice-question :key="questionRefreshKey" v-if="question.typeName == '选择题'" :number="index + 1"
+              :title="question.questionTitle" :answers="question.answer" :choose="reply[index]"
+              :isable="false"></choice-question>
+            <judge-question :key="questionRefreshKey" v-if="question.typeName == '判断题'" :number="index + 1"
+              :questionId="question.questionId" :title="question.questionTitle" :choose="reply[index]"
+              :isable="false"></judge-question>
+            <short-answer-question :key="questionRefreshKey" v-if="question.typeName == '简答题'" :number="index + 1"
+              :questionId="question.questionId" :title="question.questionTitle" :content="reply[index]"
+              :isable="true"></short-answer-question>
+            <span style="color: red">正确答案：{{
+              question.correct == "true"
+                ? "√"
+                : question.correct == "false"
                   ? "×"
                   : question.correct == null
-                  ? "无"
-                  : question.correct
-              }}</span
-            >
+                    ? "无"
+                    : question.correct
+            }}</span>
           </div>
         </div>
       </el-scrollbar>
@@ -254,10 +192,10 @@ export default {
                 (Math.floor(res.takeTime / 3600) != 0
                   ? Math.floor(res.takeTime / 3600) + "小时"
                   : "") +
-                  Math.floor(res.takeTime / 60) +
-                  "分钟" +
-                  (res.takeTime % 60) +
-                  "秒",
+                Math.floor(res.takeTime / 60) +
+                "分钟" +
+                (res.takeTime % 60) +
+                "秒",
               ],
               ["答对题数", res.correct],
             ];

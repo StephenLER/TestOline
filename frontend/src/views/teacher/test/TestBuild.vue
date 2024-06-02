@@ -9,7 +9,7 @@
             <el-input v-model="testForm.testName" placeholder="请填写测验标题"></el-input>
           </el-form-item>
         </el-col>
-        <el-col :span="16">
+        <el-col :span="11">
           <el-form-item label="测验日期" prop="date">
             <el-date-picker v-model="testForm.date" type="datetimerange" value-format="YYYY-MM-DD HH:mm:ss"
               format="YYYY-MM-DD HH:mm:ss" range-separator="至" start-placeholder="开始日期" end-placeholder="结束日期">
@@ -19,12 +19,12 @@
       </el-row>
       <el-row>
         <el-form-item label="测验简介" prop="description">
-          <el-input type="textarea" :autosize="{ minRows: 2 }" v-model="testForm.description" style="width: 1100px"
-            maxlength="50" show-word-limit></el-input>
+          <el-input type="textarea" :autosize="{ minRows: 2 }" v-model="testForm.description" style="width: 1000px"
+            maxlength="200" show-word-limit></el-input>
         </el-form-item>
       </el-row>
       <el-row>
-        <el-col :span="8">
+        <el-col :span="8" style="margin-bottom: 1.4rem;">
           <el-form-item label="所属科目" prop="subjectId">
             <el-select filterable placeholder="请选择科目" @change="changeSubjectId" v-model="testForm.subjectId">
               <el-option v-for="subject in subjectList" :key="subject.subjectId" :label="subject.subjectName"
@@ -32,6 +32,8 @@
               </el-option>
             </el-select>
           </el-form-item>
+        </el-col>
+        <el-col :span="12">
         </el-col>
         <el-col :span="8">
           <el-form-item label="组卷方式" prop="generateWay">
@@ -109,23 +111,23 @@
         </el-col>
       </el-row>
       <el-row v-if="testForm.subjectId != '' && testForm.generateWay == '2'">
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item label="预设题数" prop="presetQuestionTotal">
             <el-input-number v-model="testForm.presetQuestionTotal" :step="1" :min="0" :max="100" />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item label="预设难度" prop="presetTestDifficulty">
             <el-input-number v-model="testForm.presetTestDifficulty" :precision="2" :step="0.01" :min="0" :max="1" />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item label="难度权重" prop="difficultyWeight">
             <el-input-number v-model="testForm.difficultyWeight" :precision="2" :step="0.01" :min="0" :max="1"
               @change="valueToKnowledgeWeight" />
           </el-form-item>
         </el-col>
-        <el-col :span="6">
+        <el-col :span="5">
           <el-form-item label="知识点权重" prop="knowledgeWeight">
             <el-input-number v-model="testForm.knowledgeWeight" :precision="2" :step="0.01" :min="0" :max="1"
               @change="valueToDifficultyWeight" />
@@ -605,9 +607,9 @@ export default {
                 type: response.data.success ? "success" : "error",
                 message: response.data.message,
               });
-              if (response.data.success) {
-                this.$router.push("/teacher/testInfo");
-              }
+              // if (response.data.success) {
+              //   this.$router.push("/teacher/testInfo");
+              // }
             })
             .catch(function (error) {
               this.$message.info("数据出错");

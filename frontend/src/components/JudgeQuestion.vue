@@ -5,21 +5,15 @@
       {{ title }}
     </p>
     <p>
-      <el-button
-        circle
-        size="large"
-        @click="isable && sendAnswer(true)"
-        :type="isTrue"
-      >
-        <el-icon><check /></el-icon>
+      <el-button circle size="large" @click="isable && sendAnswer(true)" :type="isTrue">
+        <el-icon>
+          <check />
+        </el-icon>
       </el-button>
-      <el-button
-        circle
-        size="large"
-        @click="isable && sendAnswer(false)"
-        :type="isFalse"
-      >
-        <el-icon><close /></el-icon>
+      <el-button circle size="large" @click="isable && sendAnswer(false)" :type="isFalse">
+        <el-icon>
+          <close />
+        </el-icon>
       </el-button>
     </p>
   </div>
@@ -71,20 +65,23 @@ export default {
   align-items: center;
   width: 36px;
   height: 27px;
-  background-color: #38d39f;
+  background-color: #39b1f0;
   color: #fff;
   border-radius: 4px;
   margin-right: 4px;
   font-weight: bold;
 }
+
 .topic {
   padding: 20px 0px;
   font-size: 17px;
 }
+
 .el-button {
   padding: 10px;
   margin: 0 10px 0 30px;
 }
+
 .answer-content:hover {
   color: #409eff;
   cursor: pointer;

@@ -116,13 +116,6 @@
             </div>
           </template>
           <div style="line-height: 25px">
-            <!-- <span :style="{
-              color: (compareData.reply1CompareList || []).indexOf(index) != -1
-                ? 'red'
-                : '',
-            }" v-for="(str, index) in compareData.reply1Text.split('。')" :key="index">
-              {{ str }}
-            </span> -->
             <span style="color:red" v-for="(str, index) in compareData.reply1Text.split('。')" :key="index">
               {{ str }}
             </span>
@@ -135,13 +128,6 @@
             </div>
           </template>
           <div style="line-height: 25px">
-            <!-- <span :style="{
-              color: (compareData.reply2CompareList || []).indexOf(index) != -1
-                ? 'red'
-                : '',
-            }" v-for="(str, index) in compareData.reply2Text.split('。')" :key="index">
-              {{ str }}
-            </span> -->
             <span style="color:red" v-for="(str, index) in compareData.reply2Text.split('。')" :key="index">
               {{ str }}
             </span>
@@ -291,7 +277,7 @@ export default {
       setTimeout(() => {
         this.chart = this.$echarts.init(this.$refs.objectChart);
         this.chart.setOption({
-          color: ["#38d39f"],
+          color: ["#3ba5de"],
           title: {
             text: "本次测验客观题答对人数统计",
             subtext: "统计数据为所有学生所有的测验记录",

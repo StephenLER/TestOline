@@ -3,66 +3,38 @@
     <div style="margin-bottom: 10px">
       <h2 style="display: inline">用户信息</h2>
       <div style="float: right">
-        <el-button
-          @click="
-            clearFormFields();
-            isAdd = true;
-            dialogFormVisible = true;
-          "
-          >新增</el-button
-        >
-        <el-button type="danger" @click="del(this.multiSelection)"
-          >删除</el-button
-        >
+        <el-button @click="
+          clearFormFields();
+        isAdd = true;
+        dialogFormVisible = true;
+        ">新增</el-button>
+        <el-button type="danger" @click="del(this.multiSelection)">删除</el-button>
       </div>
-      <el-dialog
-        :title="(isAdd ? '新增' : '修改') + '用户信息'"
-        v-model="dialogFormVisible"
-        width="600px"
-      >
-        <el-form
-          :model="user"
-          :rules="formRules"
-          ref="user"
-          label-width="200px"
-          label-position="right"
-        >
+      <el-dialog :title="(isAdd ? '新增' : '修改') + '用户信息'" v-model="dialogFormVisible" width="600px">
+        <el-form :model="user" :rules="formRules" ref="user" label-width="200px" label-position="right">
           <el-form-item label="角色">
-            <!-- eslint-disable-next-line -->
             <template #default="scope">
               <div v-if="!isAdd">
-                <el-tag
-                  :type="user.description == '学生' ? 'success' : 'danger'"
-                >
-                  {{ user.description }}
-                </el-tag>
+
+                <el-tag :type="user.description == '学生'
+                  ? 'primary'
+                  : user.description == '教师'
+                    ? 'success'
+                    : 'error'
+                  "> {{ user.description }}</el-tag>
               </div>
-              <el-select
-                filterable
-                placeholder="请选择用户角色"
-                @change="valueToRoleId"
-                v-model="user.roleId"
-                v-if="isAdd"
-              >
-                <el-option
-                  v-for="roleData in roleList"
-                  :key="roleData.roleId"
-                  :label="roleData.description"
-                  :value="roleData.roleId"
-                >
+              <el-select filterable placeholder="请选择用户角色" @change="valueToRoleId" v-model="user.roleId" v-if="isAdd">
+                <el-option v-for="roleData in roleList" :key="roleData.roleId" :label="roleData.description"
+                  :value="roleData.roleId">
                 </el-option>
               </el-select>
             </template>
           </el-form-item>
-          <el-form-item
-            label="账号"
-            prop="account"
-            :rules="{
-              required: isAdd,
-              message: '请填写账号',
-              trigger: 'blur',
-            }"
-          >
+          <el-form-item label="账号" prop="account" :rules="{
+            required: isAdd,
+            message: '请填写账号',
+            trigger: 'blur',
+          }">
             <el-input v-model="user.account" :readonly="!isAdd"></el-input>
           </el-form-item>
           <el-form-item label="名字" prop="username">
@@ -74,38 +46,19 @@
           <el-form-item label="专业班级">
             <!-- eslint-disable-next-line -->
             <template #default="scope">
-              <span
-                :style="{
-                  color: 'red',
-                  display: user.roleId == '' ? '' : 'none',
-                }"
-                >请先选择用户角色</span
-              >
-              <el-select
-                filterable
-                placeholder="请选择专业"
-                @change="valueToMajorId"
-                v-model="majorId"
-                v-if="user.roleId == '2'"
-              >
-                <el-option
-                  v-for="major in majorList"
-                  :key="major.majorId"
-                  :label="major.majorName"
-                  :value="major.majorId"
-                >
+              <span :style="{
+                color: 'red',
+                display: user.roleId == '' ? '' : 'none',
+              }">请先选择用户角色</span>
+              <el-select filterable placeholder="请选择专业" @change="valueToMajorId" v-model="majorId"
+                v-if="user.roleId == '2'">
+                <el-option v-for="major in majorList" :key="major.majorId" :label="major.majorName"
+                  :value="major.majorId">
                 </el-option>
               </el-select>
-              <el-cascader
-                @change="valueToCascade"
-                v-model="majorclazzName"
-                placeholder="请选择专业班级"
-                :options="majorClazzList"
-                filterable1
-                :show-all-levels="false"
-                :props="{ expandTrigger: 'hover' }"
-                v-if="user.roleId == '3'"
-              ></el-cascader>
+              <el-cascader @change="valueToCascade" v-model="majorclazzName" placeholder="请选择专业班级"
+                :options="majorClazzList" filterable1 :show-all-levels="false" :props="{ expandTrigger: 'hover' }"
+                v-if="user.roleId == '3'"></el-cascader>
             </template>
           </el-form-item>
         </el-form>
@@ -117,38 +70,23 @@
         </template>
       </el-dialog>
     </div>
-    <el-table
-      :data="
-        tableData.filter(
-          (data) =>
-            !search ||
-            data.account.toLowerCase().includes(search.toLowerCase()) ||
-            data.username.toLowerCase().includes(search.toLowerCase())
-        )
-      "
-      border
-      height="540px"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table :data="tableData.filter(
+      (data) =>
+        !search ||
+        data.account.toLowerCase().includes(search.toLowerCase()) ||
+        data.username.toLowerCase().includes(search.toLowerCase())
+    )
+      " border height="540px" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40"> </el-table-column>
       <el-table-column type="index" label="序号" width="60"> </el-table-column>
-      <el-table-column
-        prop="description"
-        label="角色"
-        :filters="roleFilterData"
-        :filter-method="roleFilter"
-      >
+      <el-table-column prop="description" label="角色" :filters="roleFilterData" :filter-method="roleFilter">
         <template #default="scope">
-          <el-tag
-            :type="
-              scope.row.description == '学生'
-                ? 'success'
-                : scope.row.description == '教师'
-                ? 'warning'
-                : 'danger'
-            "
-            >{{ scope.row.description }}</el-tag
-          >
+          <el-tag :type="scope.row.description == '学生'
+            ? 'primary'
+            : scope.row.description == '教师'
+              ? 'success'
+              : 'error'
+            ">{{ scope.row.description }}</el-tag>
         </template>
       </el-table-column>
       <el-table-column prop="account" label="账号"> </el-table-column>
@@ -158,30 +96,21 @@
           <el-input v-model="search" placeholder="输入账号或名字进行搜索" />
         </template>
         <template #default="scope">
-          <el-button
-            @click="
-              clearFormFields();
-              isAdd = false;
-              dialogFormVisible = true;
-              loadMajorClazzCascader();
-              loadInfo(scope.row.userId);
-            "
-            >编辑</el-button
-          >
+          <el-button @click="
+            clearFormFields();
+          isAdd = false;
+          dialogFormVisible = true;
+          loadMajorClazzCascader();
+          loadInfo(scope.row.userId);
+          ">编辑</el-button>
           <el-button type="danger" @click="del([scope.row])">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div style="margin-top: 10px">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageno"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="size"
-        layout="total, sizes, ->, pager, next, jumper"
-        :total="totalItems"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageno"
+        :page-sizes="[5, 10, 20, 50]" :page-size="size" layout="total, sizes, ->, pager, next, jumper"
+        :total="totalItems">
       </el-pagination>
     </div>
   </div>

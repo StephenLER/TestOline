@@ -1,4 +1,3 @@
-// according to https://www.hangge.com/blog/cache/detail_2554.html
 
 import axios from 'axios'
 import { ElMessage, ElLoading } from 'element-plus'

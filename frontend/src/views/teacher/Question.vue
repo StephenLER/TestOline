@@ -3,209 +3,107 @@
     <div style="margin-bottom: 10px">
       <h2 style="display: inline">题目信息</h2>
       <div style="float: right">
-        <el-button
-          @click="
-            clearFormFields();
-            this.status = '新增';
-            dialogFormVisible = true;
-          "
-          >新增</el-button
-        >
-        <el-button type="danger" @click="del(this.multiSelection)"
-          >删除</el-button
-        >
+        <el-button @click="
+          clearFormFields();
+        this.status = '新增';
+        dialogFormVisible = true;
+        ">新增</el-button>
+        <el-button type="danger" @click="del(this.multiSelection)">删除</el-button>
       </div>
-      <el-dialog
-        :title="status + '题目信息'"
-        v-model="dialogFormVisible"
-        width="600px"
-      >
-        <el-form
-          :model="questionForm"
-          :rules="formRules"
-          ref="questionForm"
-          label-width="200px"
-          label-position="right"
-        >
+      <el-dialog :title="status + '题目信息'" v-model="dialogFormVisible" width="600px" @close="clearGeneratedQuestion">
+        <el-form :model="questionForm" :rules="formRules" ref="questionForm" label-width="200px" label-position="right">
           <el-form-item label="所属科目" prop="subjectId">
-            <el-select
-              filterable
-              placeholder="请选择所属科目"
-              @change="valueToSubjectId"
-              v-model="questionForm.subjectId"
-            >
-              <el-option
-                v-for="subject in subjectList"
-                :key="subject.subjectId"
-                :label="subject.subjectName"
-                :value="subject.subjectId"
-              >
+            <el-select filterable placeholder="请选择所属科目" @change="valueToSubjectId" v-model="questionForm.subjectId">
+              <el-option v-for="subject in subjectList" :key="subject.subjectId" :label="subject.subjectName"
+                :value="subject.subjectId">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="题目类型" prop="typeId">
-            <el-select
-              filterable
-              placeholder="请选择题目类型"
-              @change="valueToTypeId"
-              v-model="questionForm.typeId"
-            >
-              <el-option
-                v-for="type in typeList"
-                :key="type.typeId"
-                :label="type.typeName"
-                :value="type.typeId"
-              >
+            <el-select filterable placeholder="请选择题目类型" @change="valueToTypeId" v-model="questionForm.typeId">
+              <el-option v-for="type in typeList" :key="type.typeId" :label="type.typeName" :value="type.typeId">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="题目信息" prop="questionTitle">
-            <el-input
-              type="textarea"
-              :autosize="{ minRows: 2 }"
-              v-model="questionForm.questionTitle"
-              style="width: 250px"
-              maxlength="50"
-              show-word-limit
-            ></el-input>
+            <el-input type="textarea" :autosize="{ minRows: 2 }" v-model="questionForm.questionTitle"
+              style="width: 250px" maxlength="200" show-word-limit></el-input>
+            <el-button @click="generateQuestion" style="margin-left: 1rem;color:#164a84;border-radius: 15px;">
+              AI生成题目
+            </el-button>
+          </el-form-item>
+          <el-form-item label="AI生成题目及答案" prop="generatedQuestion" v-if="generatedQuestion">
+            <span v-html="parseMarkdown(generatedQuestion)" class="markdown-container"></span>
           </el-form-item>
           <div v-if="questionForm.typeId == '1'">
-            <el-form-item
-              v-for="(option, index) in questionForm.answer"
-              :key="option.answerId"
-              :label="'选项' + number2Letter(index)"
-              :prop="'answer[' + index + '].content'"
-              :rules="{
+            <el-form-item v-for="(option, index) in questionForm.answer" :key="option.answerId"
+              :label="'选项' + number2Letter(index)" :prop="'answer[' + index + '].content'" :rules="{
                 required: true,
                 message: '请填写选项' + number2Letter(index) + '的内容',
                 trigger: 'blur',
-              }"
-            >
+              }">
               <el-input v-model="option.content" style="margin-right: 5px" />
-              <el-button type="info" @click.prevent="removeOptions(option)"
-                >-</el-button
-              >
+              <el-button type="info" @click.prevent="removeOptions(option)">-</el-button>
             </el-form-item>
           </div>
-          <el-form-item
-            label="正确答案"
-            prop="correct"
-            :rules="{
-              required: questionForm.typeId != '3',
-              message: '请选择正确答案',
-              trigger: 'change',
-            }"
-            v-if="questionForm.typeId != undefined"
-          >
-            <el-select
-              v-model="questionForm.correct"
-              placeholder="请选择正确答案"
-              v-if="questionForm.typeId == '1'"
-            >
-              <el-option
-                v-for="(option, index) in questionForm.answer"
-                :key="option.key"
-                :label="number2Letter(index)"
-                :value="number2Letter(index)"
-              ></el-option>
+          <el-form-item label="正确答案" prop="correct" :rules="{
+            required: questionForm.typeId != '3',
+            message: '请选择正确答案',
+            trigger: 'change',
+          }" v-if="questionForm.typeId != undefined">
+            <el-select v-model="questionForm.correct" placeholder="请选择正确答案" v-if="questionForm.typeId == '1'">
+              <el-option v-for="(option, index) in questionForm.answer" :key="option.key" :label="number2Letter(index)"
+                :value="number2Letter(index)"></el-option>
             </el-select>
             <el-button-group v-if="questionForm.typeId == '2'">
-              <el-button
-                icon="check"
-                round
-                :type="isTrue"
-                @click="changeJudge(true)"
-              ></el-button>
-              <el-button
-                icon="close"
-                round
-                :type="isFalse"
-                @click="changeJudge(false)"
-              ></el-button>
+              <el-button icon="check" round :type="isTrue" @click="changeJudge(true)"></el-button>
+              <el-button icon="close" round :type="isFalse" @click="changeJudge(false)"></el-button>
             </el-button-group>
             <span style="color: red" v-if="questionForm.typeId == '3'">
               简答题默认无标准答案，并用相似度对比
             </span>
           </el-form-item>
           <el-form-item label="关联知识点" prop="knowledgeId">
-            <el-select
-              filterable
-              placeholder="请选择关联知识点"
-              @change="valueToKnowledgeId"
-              v-model="questionForm.knowledgeId"
-            >
-              <el-option
-                v-for="knowledge in knowledgeList"
-                :key="knowledge.chapterId"
-                :label="knowledge.content"
-                :value="knowledge.chapterId"
-              >
+            <el-select filterable placeholder="请选择关联知识点" @change="valueToKnowledgeId"
+              v-model="questionForm.knowledgeId">
+              <el-option v-for="knowledge in knowledgeList" :key="knowledge.chapterId" :label="knowledge.content"
+                :value="knowledge.chapterId">
               </el-option>
             </el-select>
           </el-form-item>
           <el-form-item label="难度系数" prop="questionDifficulty">
-            <el-input-number
-              v-model="questionForm.questionDifficulty"
-              :precision="2"
-              :step="0.01"
-              :max="1"
-              :min="0"
-            />
+            <el-input-number v-model="questionForm.questionDifficulty" :precision="2" :step="0.01" :max="1" :min="0" />
           </el-form-item>
         </el-form>
         <template #footer>
           <span class="dialog-footer">
-            <el-button
-              type="danger"
-              v-if="questionForm.typeId == '1'"
-              @click="addOptions(questionForm.answer.length)"
-              >+ 选项</el-button
-            >
+            <el-button type="danger" v-if="questionForm.typeId == '1'" @click="addOptions(questionForm.answer.length)">+
+              选项</el-button>
             <el-button @click="dialogFormVisible = false">取 消</el-button>
             <el-button type="primary" @click="save()">确 定</el-button>
           </span>
         </template>
       </el-dialog>
     </div>
-    <el-table
-      :data="
-        tableData.filter(
-          (data) =>
-            !search ||
-            data.questionTitle.toLowerCase().includes(search.toLowerCase())
-        )
-      "
-      border
-      height="540px"
-      @selection-change="handleSelectionChange"
-    >
+    <el-table :data="tableData.filter(
+      (data) =>
+        !search ||
+        data.questionTitle.toLowerCase().includes(search.toLowerCase())
+    )
+      " border height="540px" @selection-change="handleSelectionChange">
       <el-table-column type="selection" width="40"> </el-table-column>
       <el-table-column type="index" label="序号" width="60"> </el-table-column>
-      <el-table-column
-        prop="subjectName"
-        label="所属科目"
-        :filters="subjectFilterData"
-        :filter-method="subjectFilter"
-        width="150"
-      >
+      <el-table-column prop="subjectName" label="所属科目" :filters="subjectFilterData" :filter-method="subjectFilter"
+        width="150">
       </el-table-column>
-      <el-table-column
-        prop="typeName"
-        label="类型"
-        :filters="typeFilterData"
-        :filter-method="typeFilter"
-        width="85"
-      >
+      <el-table-column prop="typeName" label="类型" :filters="typeFilterData" :filter-method="typeFilter" width="85">
         <template #default="scope">
-          <el-tag
-            :type="
-              scope.row.typeName == '判断题'
-                ? 'success'
-                : scope.row.typeName == '简答题'
-                ? 'danger'
-                : ''
-            "
-          >
+          <el-tag :type="scope.row.typeName == '判断题'
+            ? 'success'
+            : scope.row.typeName == '简答题'
+              ? 'danger'
+              : ''
+            ">
             {{ scope.row.typeName }}
           </el-tag>
         </template>
@@ -224,11 +122,7 @@
       </el-table-column>
       <el-table-column prop="answer" label="正确答案" width="85">
         <template #default="scope">
-          <el-popover
-            trigger="hover"
-            placement="left"
-            v-if="scope.row.typeId == '1'"
-          >
+          <el-popover trigger="hover" placement="left" v-if="scope.row.typeId == '1'">
             <p v-for="option in scope.row.answer" :key="option.answerId">
               <span>选项{{ option.answerSign }}: {{ option.content }}</span>
             </p>
@@ -248,30 +142,21 @@
           <el-input v-model="search" placeholder="输入题目信息进行搜索" />
         </template>
         <template #default="scope">
-          <el-button
-            @click="
-              clearFormFields();
-              this.status = '修改';
-              dialogFormVisible = true;
-              loadInfo(scope.row.questionId);
-              loadKnowledgeBySubjectId(scope.row.subjectId);
-            "
-            >编辑</el-button
-          >
+          <el-button @click="
+            clearFormFields();
+          this.status = '修改';
+          dialogFormVisible = true;
+          loadInfo(scope.row.questionId);
+          loadKnowledgeBySubjectId(scope.row.subjectId);
+          ">编辑</el-button>
           <el-button type="danger" @click="del([scope.row])">删除</el-button>
         </template>
       </el-table-column>
     </el-table>
     <div style="margin-top: 10px">
-      <el-pagination
-        @size-change="handleSizeChange"
-        @current-change="handleCurrentChange"
-        :current-page="pageno"
-        :page-sizes="[5, 10, 20, 50]"
-        :page-size="size"
-        layout="total, sizes, ->, pager, next, jumper"
-        :total="totalItems"
-      >
+      <el-pagination @size-change="handleSizeChange" @current-change="handleCurrentChange" :current-page="pageno"
+        :page-sizes="[5, 10, 20, 50]" :page-size="size" layout="total, sizes, ->, pager, next, jumper"
+        :total="totalItems">
       </el-pagination>
     </div>
   </div>
@@ -279,12 +164,16 @@
 <script>
 import userToken from "@/services/auth-header";
 import { dealSelect } from "@/services/response";
+import axios from "axios";
+import MarkdownIt from 'markdown-it';
 export default {
   data() {
     return {
       status: "",
+      mdParser: new MarkdownIt(),
       dialogFormVisible: false,
       userId: "",
+      generatedQuestion: "",
       questionForm: {
         questionId: "",
         questionTitle: "",
@@ -339,7 +228,31 @@ export default {
     this.loadData();
   },
   methods: {
-    // 初始化页面
+    parseMarkdown(text) {
+      return this.mdParser.render(text);
+    },
+    async generateQuestion() {
+      if (!this.questionForm.subjectId || !this.questionForm.typeId || !this.questionForm.knowledgeId) {
+        this.$message.error("请先选择所属科目、题目类型和关联知识点");
+        return;
+      }
+      this.generatedQuestion = "AI正在生成题目中..."
+      console.log(this.questionForm.subjectName, this.questionForm.typeName, this.questionForm.knowledgeContent)
+      const formData = new FormData();
+      formData.append('subjectName', this.questionForm.subjectName);
+      formData.append('typeName', this.questionForm.typeName);
+      formData.append('knowledgeContent', this.questionForm.knowledgeContent);
+      await axios.post("/ccc/question", formData)
+        .then(response => {
+          console.log("Response data:", response.data);
+          this.generatedQuestion = response.data.result;
+        })
+        .catch(error => {
+          console.error("AI生成题目请求出错:", error);
+          this.$message.error("AI生成题目请求出错");
+          this.generatedQuestion = ""
+        });
+    },
     loadData() {
       this.findAll();
       this.loadSubjectByTeacherId();
@@ -419,6 +332,10 @@ export default {
     },
     valueToSubjectId(val) {
       this.questionForm.subjectId = val;
+      const selectedSubject = this.subjectList.find(subject => subject.subjectId === val);
+      if (selectedSubject) {
+        this.questionForm.subjectName = selectedSubject.subjectName;
+      }
       this.loadKnowledgeBySubjectId(this.questionForm.subjectId);
     },
 
@@ -446,6 +363,10 @@ export default {
     },
     valueToTypeId(val) {
       this.questionForm.typeId = val;
+      const selectedType = this.typeList.find(type => type.typeId === val);
+      if (selectedType) {
+        this.questionForm.typeName = selectedType.typeName;
+      }
       this.questionForm.answer = [
         {
           answerId: "",
@@ -471,6 +392,10 @@ export default {
     },
     valueToKnowledgeId(val) {
       this.questionForm.knowledgeId = val;
+      const selectedKnowledge = this.knowledgeList.find(knowledge => knowledge.chapterId === val);
+      if (selectedKnowledge) {
+        this.questionForm.knowledgeContent = selectedKnowledge.content;
+      }
     },
 
     addOptions(index) {
@@ -498,6 +423,9 @@ export default {
       this.questionForm.correct = choose;
       this.isTrue = choose ? "primary" : "";
       this.isFalse = !choose ? "primary" : "";
+    },
+    clearGeneratedQuestion() {
+      this.generatedQuestion = "";
     },
 
     // 新增&编辑
@@ -536,10 +464,10 @@ export default {
             this.questionForm.answer.forEach((item) => {
               option.push(
                 (item.answerId != "" ? item.answerId : "") +
-                  " " +
-                  item.answerSign +
-                  " " +
-                  item.content
+                " " +
+                item.answerSign +
+                " " +
+                item.content
               );
             });
           }
@@ -609,5 +537,13 @@ export default {
 <style scoped>
 .el-input {
   width: 250px;
+}
+
+.markdown-container {
+  display: inline-block;
+  width: 400px;
+  border: 1px solid #ccc;
+  padding: 10px;
+  border-radius: 10px;
 }
 </style>

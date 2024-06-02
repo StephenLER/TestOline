@@ -11,7 +11,7 @@
  Target Server Version : 80034
  File Encoding         : 65001
 
- Date: 24/05/2024 01:32:45
+ Date: 02/06/2024 22:59:52
 */
 
 SET NAMES utf8mb4;
@@ -463,7 +463,7 @@ CREATE TABLE `test`  (
   PRIMARY KEY (`test_id`) USING BTREE,
   INDEX `fk_test_subject_1`(`subject_id` ASC) USING BTREE,
   CONSTRAINT `fk_test_subject_1` FOREIGN KEY (`subject_id`) REFERENCES `subject` (`subject_id`) ON DELETE CASCADE ON UPDATE CASCADE
-) ENGINE = InnoDB AUTO_INCREMENT = 112 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
+) ENGINE = InnoDB AUTO_INCREMENT = 114 CHARACTER SET = utf8mb4 COLLATE = utf8mb4_0900_ai_ci ROW_FORMAT = DYNAMIC;
 
 -- ----------------------------
 -- Records of test

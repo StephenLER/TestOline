@@ -5,11 +5,7 @@
       {{ title }}
     </p>
     <p v-for="(answer, index) in answers" :key="index">
-      <el-button
-        circle
-        @click="isable && sendAnswer(index)"
-        :type="chooseFlag[index] ? 'primary' : ''"
-      >
+      <el-button circle @click="isable && sendAnswer(index)" :type="chooseFlag[index] ? 'primary' : ''">
         {{ answer.answerSign }}
       </el-button>
       <span class="answer-content" @click="isable && sendAnswer(index)">
@@ -73,20 +69,23 @@ export default {
   align-items: center;
   width: 36px;
   height: 27px;
-  background-color: #38d39f;
+  background-color: #39b1f0;
   color: #fff;
   border-radius: 4px;
   margin-right: 4px;
   font-weight: bold;
 }
+
 .topic {
   padding: 20px 0px;
   font-size: 17px;
 }
+
 .el-button {
   padding: 10px;
   margin: 0 10px 0 30px;
 }
+
 .answer-content:hover {
   color: #409eff;
   cursor: pointer;

@@ -1,6 +1,4 @@
 module.exports = {
-  // css、js、img静态资源存放文件夹
-  // assetsDir: 'static',
   lintOnSave: false,
 
   devServer: {
@@ -9,12 +7,17 @@ module.exports = {
     proxy: {
       '/api': {
         target: 'http://localhost:9090',
-        // https协议
-        // secure: false,
         changOrigin: true,
         pathRewrite: {
           '^/api': '',
         },
+      },
+      "ccc": {
+        target: "http://127.0.0.1:5000",
+        pathRewrite: {
+          '^/ccc': ''
+        },
+        ChannelMergerNode: true
       },
     },
   },

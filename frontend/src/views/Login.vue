@@ -5,20 +5,20 @@
       <div class="img"></div>
       <div class="login-box">
         <form action="#" style="width: 360px">
-          <img src="../assets/login/考试系统.svg" @click="toAdmin" alt="" class="avatar"
+          <img src="../assets/login/智慧考试.svg" @click="toAdmin" alt="" class="avatar"
             style="cursor: pointer;height: 5rem;" />
-          <h2 style="letter-spacing: 2px;font-size: 2rem;color: #ffffff;">SUFE考试系统</h2>
+          <h2 style="letter-spacing: 2px;font-size: 2.3rem;color: #ffffff;">SUFE考试系统</h2>
           <div class="radio-group">
             <div>
-              <el-button icon="checked" round size="large" :type="isTch" @click="changeIdentity(2)">教师</el-button>
+              <el-button icon="Avatar" round size="large" :type="isTch" @click="changeIdentity(2)">教师</el-button>
             </div>
             <div>
-              <el-button icon="briefcase" round size="large" :type="isStu" @click="changeIdentity(3)">学生</el-button>
+              <el-button icon="UserFilled" round size="large" :type="isStu" @click="changeIdentity(3)">学生</el-button>
             </div>
           </div>
           <div class="input-group">
             <div class="icon">
-              <i class="fa fa-user"></i>
+              <i class="fa fa-user" style="color:#39b1f0"></i>
             </div>
             <div>
               <input type="text" class="input" v-model="user.account" style="color: black;" />
@@ -26,13 +26,13 @@
           </div>
           <div class="input-group">
             <div class="icon">
-              <i class="fa fa-lock"></i>
+              <i class="fa fa-lock" style="color:#39b1f0"></i>
             </div>
             <div>
               <input class="input" type="password" v-model="user.password" style="color: black;" />
             </div>
           </div>
-          <input type="button" class="btn" value="登录" @click="login()" />
+          <input type="button" class="btn" style="width:25%" value="登  录" @click="login()" />
         </form>
       </div>
     </div>
